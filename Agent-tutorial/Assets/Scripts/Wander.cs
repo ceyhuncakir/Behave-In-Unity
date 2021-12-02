@@ -16,13 +16,12 @@ public class Wander : MonoBehaviour
 
     void Start()
     {
-        minX = -45.0f;
-        maxX = 45.0f;
+        minX = -10.0f;
+        maxX = 10.0f;
 
-        minZ = -45.0f;
-        maxZ = 45.0f;
+        minZ = -10.0f;
+        maxZ = 10.0f;
 
-        //Get Wander Position
         GetNextPosition();
     }
 
