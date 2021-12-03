@@ -9,6 +9,7 @@ public class PlayerTank : MonoBehaviour
 
     private float movementSpeed;
     private float rotationSpeed;
+    public float health = 100.0f;
 
     // Use this for initialization
     void Start()
@@ -16,6 +17,21 @@ public class PlayerTank : MonoBehaviour
         movementSpeed = 10.0f;
         rotationSpeed = 2.0f;
     }
+
+    public void TakeDamage(float amount)
+    {
+        health -= amount;
+        if(health <= 0)
+        {
+            die();
+        }
+    }
+
+    void die()
+    {
+        Destroy(gameObject);
+    }
+      
 
     // Update is called once per frame
     void Update()

@@ -9,6 +9,11 @@ public class Perspective : Sense
 
     private Transform playerTransform;
     private Vector3 rayDirection;
+    public float damage = 50f;
+    public ParticleSystem muzzleFlash;
+    public GameObject hiteffect;
+    public float impactforce = 30f;
+    public float shootDelay = 5f;
 
     protected override void Initialize()
     {
@@ -21,7 +26,11 @@ public class Perspective : Sense
 
         if (elapsedTime >= detectionRate)
         {
-            DetectAspect();
+
+            if(playerTransform != null)
+            {
+                DetectAspect();
+            }
         }
     }
 
@@ -42,8 +51,33 @@ public class Perspective : Sense
                     //Check the aspect
                     if (aspect.aspectType != aspectName)
                     {
-                        print("Enemy Detected");
-                    }
+                        shoot();
+                    } 
+                }
+
+                GameObject hitgameobject = Instantiate(hiteffect, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(hitgameobject, 1f);
+            }
+        }
+    }
+
+    void shoot()
+    {
+        muzzleFlash.Play();
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, rayDirection, out hit, viewDistance))
+        {
+            PlayerTank target = hit.transform.GetComponent<PlayerTank>();
+
+            if(target != null)
+            {
+
+                target.TakeDamage(damage);
+
+
+                if (hit.rigidbody != null)
+                {
+                    hit.rigidbody.AddForce(-hit.normal * impactforce);
                 }
             }
         }
